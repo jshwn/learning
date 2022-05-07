@@ -107,3 +107,9 @@ Concurrency와 Parallelism의 개념은 마치 Synchronous와 Blocking의 개념
 ##  Multithreading: hardware context
 *   TMT는 가장 기본적인 명령어 파이프라이닝(하나의 사이클에서 그리고 하나의 파이프라인 stage에서 실행 가능한 스레드가 1개)
 *   SMT는 슈퍼스칼라
+
+
+
+#   Idea
+*   컴퓨터를 어떻게 동작시킬 것인가?
+*   컴퓨터의 성능을 어떻게 향상시킬 것인가?
