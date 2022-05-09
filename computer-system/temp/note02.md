@@ -1,3 +1,6 @@
+2의 보수: $ x + \bar{x} + 1 = 0 $
+$\bar{x}$는 $x$의 모든 비트를 반전시킨 값
+
 ##  MIPS 명령어 필드
 *   op(6bits)
 *   rs(5bits)   first soure operand register
