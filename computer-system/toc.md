@@ -1,53 +1,39 @@
 #   Table of Contents
 
-여담: 컴퓨터 시스템의 컴포터넌트 및 개념 간 연관성(또는 의존성)이 매우 강해서 순서대로 설명하는 걸 포기해야할 것 같다.
-
-단원별 내용 구성:
-RISC vs CISC 차이점: MIPS(or ARM) vs Intel x86
-application programming level
-instruction architecture level
-hardware implementation level
-(+) security issue(ex: Intel CPU gate)
-
-단원별 내용 구성 세부 계획:
-application programming level은 주로 C 명세나 코드 작성 레벨 또는 컴파일러 단계에서의 효율성 개선이 해당함.
-----명령어 명세----
-명령어 구현
-*   일반적인 하드웨어 구현
-*   주어진 아키텍처 맥락에서 효율성 개선(또는 극대화) 구현
-추상적인(또는 수학적인) 접근은 Boolean Algebra, Integer Arithmetic까지일 듯
-
 ##  Part I. Processor
 
-##  Overview
+### Overview
+*   폰 노이만 아키텍처 vs Harvard 아키텍처
+*   Instruction Cycle
+    *   단순 순서도가 아니라 회로 동작이 어느 정도 반영된 도안
 *   명령어 기본
     *   명령어 형식
     *   피연산자 접근 방식 = 주소 지정 방식
-*   Instruction Cycle
-    *   단순 순서도가 아니라 회로 동작이 어느 정도 반영된 도안
+*   성능 측정 지표
 
-##  Bitwise Operations
+### Bitwise Operations
 logical shift, arithmetic shift, and, or, not, xor 등
 Boolean Algebra 해당함.
 
-##  Integer Arithmetic in Computer System
+### Integer Arithmetic in Computer System
 부호 없는 정수
 부호 절대치, 1의 보수, 2의 보수
 정수 산술
 
 덧셈 빠르게 하는 법: 올림수 예견(carry lookahead)
 
-##  Float Arithmetic in Computer System
+### Float Arithmetic in Computer System
 IEE754
 AVX, SSE 등
 
-##  Control
+### Control
 *   분기 branch
     *   조건부 분기: 순환 loop, switch/case
     *   무조건 분기
 *   프로시저 Procedure
+    *   security issue: buffer overflow exlpoit
 
-##  Compilation and Execution
+### Compilation and Execution
 어떻게 코드가 명령어의 열이 되는가?
 컴파일 단계
 어플리케이션 코드의 symbol 처리: symbol table
@@ -55,7 +41,7 @@ AVX, SSE 등
 api와 abi
 
 
-##  Parallelism for Processor
+### Parallelism for Processor
 Concurrency vs Parallelism
 명령어 수준 병렬성: ILP
 스레드 수준 병렬성; TLP - SMT vs TMT
@@ -67,7 +53,7 @@ UMA vs NUMA
 
 GPU
 
-##  Virtualization
+### Virtualization
 linux cgroup
 hyper-v
 
