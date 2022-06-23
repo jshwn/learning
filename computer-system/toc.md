@@ -14,13 +14,12 @@
 ### Bitwise Operations
 logical shift, arithmetic shift, and, or, not, xor 등
 Boolean Algebra 해당함.
+*   algorithm: bitmasking
 
 ### Integer Arithmetic in Computer System
 부호 없는 정수
 부호 절대치, 1의 보수, 2의 보수
-정수 산술
-
-덧셈 빠르게 하는 법: 올림수 예견(carry lookahead)
+정수 산술: 덧셈, 곱셈, 나눗셈
 
 ### Float Arithmetic in Computer System
 IEE754
@@ -28,17 +27,11 @@ AVX, SSE 등
 
 ### Control
 *   분기 branch
+    *   무조건 분기: jump(goto)
     *   조건부 분기: 순환 loop, switch/case
-    *   무조건 분기
 *   프로시저 Procedure
     *   security issue: buffer overflow exlpoit
-
-### Compilation and Execution
-어떻게 코드가 명령어의 열이 되는가?
-컴파일 단계
-어플리케이션 코드의 symbol 처리: symbol table
-정적 링크와 동적 링크
-api와 abi
+*   algorithm: 재귀 vs 순환
 
 
 ### Parallelism for Processor
@@ -52,6 +45,13 @@ SMP (vs AMP) vs MPP
 UMA vs NUMA
 
 GPU
+
+### Compilation and Execution
+어떻게 코드가 명령어의 열이 되는가?
+컴파일 단계
+어플리케이션 코드의 symbol 처리: symbol table
+정적 링크와 동적 링크
+api와 abi
 
 ### Virtualization
 linux cgroup
