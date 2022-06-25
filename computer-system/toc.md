@@ -46,6 +46,10 @@ UMA vs NUMA
 
 GPU
 
+### Interrupt and Exception
+*   ISR: Interrupt Service Routine
+*   IVT: INterrupt Vector Table
+
 ### Compilation and Execution
 어떻게 코드가 명령어의 열이 되는가?
 컴파일 단계
