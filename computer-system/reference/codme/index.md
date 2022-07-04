@@ -37,11 +37,12 @@ again:
 
 만약 s1 레지스터의 값이 100이면, 
 
-(1) MEM\[100\]의 값을 t1으로 적재
-(2) MEM\[100\]의 값과 t1 레지스터의 값을 비교하여
-    1. 두 값이 같으면 t0 레지스터에 1을 적재
-    2. 두 값이 틀리면 t0 레지스터에 0을 적재
-(3) $t0==0이면 위 과정을 다시 반복
+(1) MEM\[100\]의 값을 t1으로 적재   \
+    ( (1)과 (2) 사이에 다른 프로세스나 프로세서에서 MEM\[100\]의 값을 수정했을 수 있음 ) \
+(2) MEM\[100\]의 값과 t1 레지스터의 값을 비교하여   \
+    1. 두 값이 같으면 t0 레지스터에 1을 적재    \
+    2. 두 값이 틀리면 t0 레지스터에 0을 적재    \
+(3) $t0==0이면 위 과정을 다시 반복  \
 (4) (1)에서 적재한 $t1을 다른 레지스터에 복사
 
 load linked/store conditional 매커니즘의 또 다른 장점은 atomic compare and swap 또는 atomic fecth-and-increment 같은 다른 동기화 프리미티브를 만드는 데 사용할 수 있다는 점이다. 이러한 프리미티브들은 여러 가지 병렬 프로그래밍 모델에서 사용되며, 이러한 모델에서는 load linked/store conditional 매커니즘 사이에 명령어가 추가로 필요한 경우가 있다.
@@ -74,3 +75,7 @@ MIPS에는 EPC(exception program counter)라고 불리는 레지스터가 있어
 *   레벨 구동 클러킹(level sensitive)
 
 에지 구동 방법론은 경쟁 관계를 발생시키지 안흥면서 같은 클럭 사이클에 상태 소자를 읽고 쓸 수 있게 해준다.
+
+### p310
+멀티사이클 구현 관련
+https://talkingaboutme.tistory.com/entry/Study-Multi-Cycle-Implementation
