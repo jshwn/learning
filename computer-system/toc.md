@@ -11,7 +11,8 @@
 *   Pipelining
 
 ##  메모리
-
+*   Cache
+*   Virtual Memory
 
 
 

@@ -1,4 +1,6 @@
 #   실습 설정
+
+##  gcc 플래그 설정
 출처: https://hdacker.tistory.com/18
 
 gcc -m32 -fno-stack-protector -mpreferred-stack-boundary=2 -no-pie -fno-pic -o main main.c
@@ -15,6 +17,17 @@ gcc -m32 -fno-stack-protector -mpreferred-stack-boundary=2 -no-pie -fno-pic -o m
 참고: https://gcc.gnu.org/onlinedocs/gcc/Code-Gen-Options.html#Code-Gen-Options
 
 
+*   -pg: gprof으로 프로그램을 프로파일링 하려면 이 옵션으로 컴파일해야 한다.
+    *     -pg                     Enable mcount instrumentation
+    *   참고: https://stackoverflow.com/a/7290284
+
 ##  행렬곱 관련 참고
 *   https://blog.qiqitori.com/2018/05/matrix-multiplication-using-the-fma-instruction/
 *   https://blog.qiqitori.com/2018/04/baby-steps-in-simd-sseavx/
+
+##  프로파일링 관련 참고
+https://stackoverflow.com/q/375913
+
+dbi: dynamic binary instrumentation 동적 바이너리 계측
+gprof
+google performance tool(https://github.com/gperftools/gperftools)
