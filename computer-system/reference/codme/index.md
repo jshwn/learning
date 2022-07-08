@@ -79,3 +79,11 @@ MIPS에는 EPC(exception program counter)라고 불리는 레지스터가 있어
 ### p310
 멀티사이클 구현 관련
 https://talkingaboutme.tistory.com/entry/Study-Multi-Cycle-Implementation
+
+
+
+#   Chapter 6 병렬 프로세서
+
+##  p580
+*   경성 스케일링(strong scaling): 문제의 크기를 고정시킨 상태에서 얻어지는 속도 개선
+*   연성 스케일링(weak scaling): 프로세서 수에 비례하여 문제 크기를 증가시키는 경우의 속도 개선
