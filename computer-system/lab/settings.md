@@ -33,6 +33,8 @@ gcc -m32 -fno-stack-protector -mpreferred-stack-boundary=2 -no-pie -fno-pic -o m
 *   https://blog.qiqitori.com/2018/05/matrix-multiplication-using-the-fma-instruction/
 *   https://blog.qiqitori.com/2018/04/baby-steps-in-simd-sseavx/
 
+*   https://junstar92.tistory.com/241
+
 ##  프로파일링 관련 참고
 https://stackoverflow.com/q/375913
 
