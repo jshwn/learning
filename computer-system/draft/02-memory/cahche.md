@@ -1,3 +1,19 @@
+#   Instruction Cache vs Data Cache
+출처: https://softwareengineering.stackexchange.com/a/44737
+
+인스트럭션 캐시와 데이터 캐시를 분리하는 이유에는 여러가지 있다.
+
+우선 명령어 접근과 데이터 접근의 지역성에 차이가 있다는 점이다.
+배열의 모든 원소를 더하는 반복문 코드의 경우, 명령어는 시간적 지역성(temporal locality)을 가지는 반면 데이터는 공간적 지역성(spatial locality)을 가진다.
+
+현대의 프로세서들은 데이터 캐시와 명령어 캐시를 동시에 접근한다. 이는 대역폭(bandwith)을 늘려서 프로세서의 처리량을 늘리는 효과를 낸다.
+
+또한 명령어를 읽을 때 read/write 구분을 위한 1비트를 절약할 수 있다. 일반적인 데이터에 접근할 때는 읽기와 쓰기를 구분해야 하지만, 명령어는 읽기 전용이기 때문에 둘을 구분하면 명령어 캐시에서는 read/write 구분 비트를 쓸 필요가 없다.
+
+
+#   Cache Simulator
+출처: https://www3.ntu.edu.sg/home/smitha/ParaCache/Paracache/start.html
+
 #   CS:APP
 *   콜드 캐시: 비어 있는 캐시
 *   콜드 미스 cold miss: 비어 있는 캐시를 접근해서 캐시 미스가 발생하는 경우
