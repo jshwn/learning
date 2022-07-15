@@ -97,12 +97,24 @@ long _do_fork(unsigned long clone_flags,
 `copy_process`: pp187-189
 `wake_up_new_task`: pp189-190
 
-### user process fork
+### copy_process()
+출처: https://elixir.bootlin.com/linux/v4.19/source/kernel/fork.c#L1628
+*   [dup_task_struct](https://elixir.bootlin.com/linux/v4.19/source/kernel/fork.c#L1707): task_struct 구조체와 프로세스가 실행될 스택 공간을 할당
+*   [L1839-L1841](https://elixir.bootlin.com/linux/v4.19/source/kernel/fork.c#L1839): task_struct의 스케줄링 관련 정보 초기화
+*   [L1849-L1888](https://elixir.bootlin.com/linux/v4.19/source/kernel/fork.c#L1854): 부모 프로세스의 프로세스 정보를 생성할 프로세스에 복사
+
+### wake_up_new_task
+출처: https://elixir.bootlin.com/linux/v4.19/source/kernel/sched/core.c#L2394
+*   [p->state = TASK_RUNNING](https://elixir.bootlin.com/linux/v4.19/source/kernel/sched/core.c#L2400): 프로세스 상태를 `TASK_RUNNING`으로 변경
+*   [L2411](https://elixir.bootlin.com/linux/v4.19/source/kernel/sched/core.c#L2411): thread_info 구조체의 cpu 필드에 현재 실행 중인 [cpu 번호 저장](https://elixir.bootlin.com/linux/v4.19/source/kernel/sched/sched.h#L1339)
+*   [L2413-L2417](https://elixir.bootlin.com/linux/v4.19/source/kernel/sched/core.c#L2413): 
+
+### 프로세스 생성: user process fork
 *   `fork`
 *   `sys_clone`
 *   `_do_fork`
 
-### kernel process fork
+### 프로세스 생성: kernel process fork
 *   커널 스레드 생성 요청
 *   `kthread_create`
 *   `kthread_create_on_node`
@@ -114,6 +126,42 @@ long _do_fork(unsigned long clone_flags,
 *   `_do_fork`
 
 
+##  do_exit()
+출처: https://elixir.bootlin.com/linux/v4.19/source/kernel/exit.c#L765
+
+
+```cpp
+void __noreturn do_exit(long code)
+```
+
+`__noreturn` 지시자는 실행 후 자신을 호출한 함수로 되돌아가지 않는다고 컴파일러에게 지시한다.
+```cpp
+// https://elixir.bootlin.com/linux/v4.19/source/include/linux/compiler_types.h#L209
+#define __noreturn		__attribute__((noreturn))
+```
+
+*   [do_task_dead](https://elixir.bootlin.com/linux/v4.19/source/kernel/exit.c#L924)
+*   [schedule](https://elixir.bootlin.com/linux/v4.19/source/kernel/sched/core.c#L3482)
+
+
+### do_task_dead
+*   출처: https://elixir.bootlin.com/linux/v4.19/source/kernel/sched/core.c#L3482
+
+### 프로세스 종료: user process exit
+*   `exit`
+*   `sys_exit_group`
+*   `do_group_exit`
+*   `do_exit`
+
+### 프로세스 생성: kernel process fork
+*   `slow_work_pending`
+*   `do_work_pending`
+*   `do_signal`
+*   `do_group_exit`
+*   `do_exit`
+
+##  task_struct
+
 ##  current 매크로
 `task_struct`와 관련된 함수에서는 `current`를 마치 전역변수처럼 접근한다.
 즉 함수 내부에서 `current`를 선언하지 않고도 `current` 변수에 접근할 수 있는 것이다.
@@ -123,6 +171,33 @@ long _do_fork(unsigned long clone_flags,
 실행 중인 프로세스 스택의 주소를 이용해 최상단 주소에 접근하여 `thread_info` 구조체의 `task` 필드의 주소를 반환하는 코드.
 
 
+##  인터럽트
+irq stands for interrupt request
+
+*   `handle_level_irq()`
+*   `handle_irq_event()`
+*   `__handle_irq_event_percpu()`
+*   `dwc_otg_common_irq()`
+
+인터럽트 컨텍스트에서 스케줄링을 하면, 안 그래도 인터럽트 핸들러가 인터럽트를 빨리 처리해야 하는데 휴면 상태에 돌입하면 시스템이 오동작할 수 있다(pp314-315).
+
+### 인터럽트 벡터
+*   `__irq_svc`: 커널 모드
+*   `__irq_usr`: 유저 모드
+
+### 인터럽트 디스크립터
+`irq_desc` 구조체
+
+인터럽트 종류별 발생 횟수는 `cat /proc/interrupts` 명령어로 확인 가능
+
+## 인터럽트 후반부 처리
+*   IRQ 스레드
+*   Soft IRQ
+*   tasklet: Soft IRQ를 디바이스 드라이버 레벨에서 쓸 수 있는 인터페이스
+*   Work Qeuue
+
+`atomic`: 커널에서는 스케줄링 하면 안 되는 컨텍스트 또는 선점 스케줄링이 되지 않는 실행 단위(어셈블리 명령어).
 
 ##  기타
 *   [RCU](https://www.kernel.org/doc/html/latest/RCU/whatisRCU.html)
+*   [profs vs sysfs](https://unix.stackexchange.com/a/86614)
