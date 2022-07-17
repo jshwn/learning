@@ -174,16 +174,21 @@ void __noreturn do_exit(long code)
 ##  인터럽트
 irq stands for interrupt request
 
-*   `handle_level_irq()`
-*   `handle_irq_event()`
-*   `__handle_irq_event_percpu()`
-*   `dwc_otg_common_irq()`
-
 인터럽트 컨텍스트에서 스케줄링을 하면, 안 그래도 인터럽트 핸들러가 인터럽트를 빨리 처리해야 하는데 휴면 상태에 돌입하면 시스템이 오동작할 수 있다(pp314-315).
 
+커널에서 인터럽트를 처리하는 과정에 대한 간략한 기술:
+
+1.  인터럽트 벡터(`__irq_svc`)를 실행하여 실행 중인 프로세스의 레지스터 세트를 프로세스 스택에 저장
+2.  커널의 IRQ 서브시스템에서 관련 함수를 호출하다가 `__handle_irq_event_precpu()` 함수에서 인터럽트 디스크립터를 읽어서 인터럽트 핸들러 함수(ISR, Interrupt Service Routine이라고도 함)를 호출
+3.  인터럽트 핸들러 함수가 이후에 해야할 일을 수행.
+
 ### 인터럽트 벡터
-*   `__irq_svc`: 커널 모드
-*   `__irq_usr`: 유저 모드
+*   인터럽트 벡터의 종류
+    *   `__irq_svc`: 커널 모드
+    *   `__irq_usr`: 유저 모드
+
+### 인터럽트 등록
+
 
 ### 인터럽트 디스크립터
 `irq_desc` 구조체
@@ -191,12 +196,64 @@ irq stands for interrupt request
 인터럽트 종류별 발생 횟수는 `cat /proc/interrupts` 명령어로 확인 가능
 
 ## 인터럽트 후반부 처리
+pp384-385 참고
 *   IRQ 스레드
-*   Soft IRQ
+*   Soft IRQ: 각 Soft IRQ 서비스에 제한 시간(`MAX_SOFTIRQ_TIME`)이나 최대 재시작 횟수(`MAX_SOFTIRQ_RESTART`)를 설정하여 Soft IRQ 컨텍스트에서의 처리가 느려지면 `ksoftirqd` 스레드를 깨워 나머지를 처리하도록 하고 Soft IRQ 서비스는 종료.
 *   tasklet: Soft IRQ를 디바이스 드라이버 레벨에서 쓸 수 있는 인터페이스
 *   Work Qeuue
 
+IRQ 스레드는 인터럽트 후반부 처리 로직에서 자체적으로 실행 시간이 길어질 때 조치하지 않는 이상 실행 시간이 길어져도 이를 제어할 방법이 없다. 또한 IRQ 스레드는 실시간 프로세스로 구동되므로 다른 일반 프로세스들이 선점을 할 수 없는데, 이때 인터럽트 후반부 처리 시간이 길어지면 다른 프로세스들이 모두 대기하게 되며 이는 시스템 전체 속도가 느려지게 되는 결과를 초래한다.
+
+반면 Soft IRQ는 인터럽트 후반부 처리 시간이 길어지면 이를 `ksoftirqd` 커널 스레드에 넘긴다. `ksoftirqd`는 IRQ 스레드와 하는 역할이 같다. (사견: 교재에서는 `ksoftirqd`가 실시간 프로세스인지 여부가 나와있지 않는데 일반 프로세스라면 결과 반환 지연은 워크큐와 비슷할 것으로 추정한다.)
+
+워크큐는 일반 프로세스로 프로세스 우선순위가 높지 않아 처리 시간은 긴데 결과를 빨리 반환할 필요가 없을 때 쓰면 좋을 것이다.
+
+결국 인터럽트 빈도와 처리 시간은 반비례 관계가 되어야 한다. 인터럽트 빈도도 높고 처리 시간도 길면 결국 처리 결과 반환 시간을 포기해야 한다.
+
 `atomic`: 커널에서는 스케줄링 하면 안 되는 컨텍스트 또는 선점 스케줄링이 되지 않는 실행 단위(어셈블리 명령어).
+
+##  IRQ 스레드(threaded IRQ)
+IRQ 스레드: 인터럽트 처리 전용 프로세스.
+라즈비안에서는 IRQ 스레드가 1개이지만, 다른 리눅스 배포판에서는 IRQ가 2개 이상일 수 있다.
+
+### IRQ 스레드 생성
+IRQ 스레드는 부팅 과정에서 생성된 다음, 이후에 인터럽트 핸들러에서 IRQ 스레드를 깨우는 방식으로 IRQ 스레드가 동작한다.
+
+*   `request_thread_irq`
+    *   [prototype in header](https://elixir.bootlin.com/linux/v4.19/source/include/linux/interrupt.h#L139)
+        *   `unsigned int irq`: 인터럽트 번호
+        *   `irq_handler_t handler`: 인터럽트 핸들러의 주소
+        *   `irq_handler_t thread_fn`: IRQ 스레드 처리 함수의 주소
+        *   `unsigned long flags`: 인터럽트 핸들링 플래그
+        *   `const char *name`: 인터럽트(를 발생시킨 디바이스) 이름
+        *   `void *dev`: A cookie passed back to the handler function
+    *   [function in source](https://elixir.bootlin.com/linux/v4.19/source/kernel/irq/manage.c#L1794)
+        *   L1833-L1849: 인터럽트 디스크립터 설정. 인터럽트 디스크립터의 필드 중 `action` 구조체에서 IRQ 스레드 관련 정보를 저장.
+        *   L1849: `__setup_irq` 함수로 IRQ 스레드 생성
+*   `__setup_irq`
+    *   [function in source](https://elixir.bootlin.com/linux/v4.19/source/kernel/irq/manage.c#L1181)
+    *   L1233-L1242: `new->thread_fn`에 IRQ 스레드 처리 함수가 등록되었는지 그리고 nested의 값이 1(인터럽트 중에 난입한 인터럽트인지)인지 확인.
+    *   L1234: `setup_irq_thread` 함수 실행
+*   `setup_irq_thread`
+    *   [function in source](https://elixir.bootlin.com/linux/v4.19/source/kernel/irq/manage.c#L1125)
+    *   L1132-L1139: `kthread_create`로 커널 스레드 생성
+
+리눅스 커널에서는 IRQ 스레드 처리 함수와 IRQ 스레드 핸들러 함수를 모두 IRQ 스레드 핸들로로 취급하지만, 이들의 역할은 서로 다르다.
+스레드로 생성되는 `irq_thread`는 IRQ 스레드 핸들러이고, 이 IRQ 스레드 핸들러가 지정된 함수를 실행할 때 그 함수를 IRQ 스레드 처리 함수라고 부른다.
+
+### IRQ 스레드 실행
+p413
+
+
+##  Soft IRQ
+Soft IRQ 서비스는 Soft IRQ를 실행하는 단위이다.
+
+### Soft IRQ 서비스 핸들러 등록
+### Soft IRQ 서비스 요청
+### Soft IRQ 서비스 처리
+*   `__do_softirq()`
+
+### ksoftirqd 스레드
 
 ##  기타
 *   [RCU](https://www.kernel.org/doc/html/latest/RCU/whatisRCU.html)
