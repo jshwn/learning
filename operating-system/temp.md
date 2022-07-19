@@ -8,6 +8,23 @@ compendium of best practice: 모범 사례의 개요
 
 tasklet and softirq vs workqueue: https://selfish-developer.com/entry/tasklet과-workqueue-12-차이점
 
+#   코드로 알아보는 ARM 리눅스 커널
+*   커널 버전: 4.6 (p xx)
+    *   교재에서 제시한 소스코드 [출처](https://github.com/torvalds/linux/tree/4.6)는 2022년 7월 19일 기준 404를 반환한다.
+    *   https://elixir.bootlin.com/linux/v4.6/source
+
+##  ARMv8
+ARMv8은 64bit 아키텍처이지만, 실행 상태(execution state)라는 개념을 통해 AArch64(64bit 실행 상태)와 AArch32(32bit 실행 상태)를 사용한다. 64bit와 32bit 모두 지원
+
+### ARMv8의 익셉션 모델
+
+
+##  부트로딩
+리눅스 커널 v4.6의 arch/arm64에서 head.S는 `/arch/arm64/boot/`가 아니라 `/arch/arm64/kernel/`에 있다.
+
+소스코드 [출처](https://elixir.bootlin.com/linux/v4.6/source/arch/arm64/kernel/head.S)
+
+
 
 
 #   리눅스 커널과 객체 지향 패턴
