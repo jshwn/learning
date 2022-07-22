@@ -24,3 +24,6 @@ HTTP is  generic, stateless, protocol.
 *   Response - Outbound, Upstream
 
 ##  HTTP data exchange
+
+##  HTTP Connection Models
+[HTTP/1.x의 커넥션 관리 - HTTP | MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/Connection_management_in_HTTP_1.x)

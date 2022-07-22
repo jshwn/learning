@@ -24,7 +24,15 @@ ARMv8은 64bit 아키텍처이지만, 실행 상태(execution state)라는 개�
 
 소스코드 [출처](https://elixir.bootlin.com/linux/v4.6/source/arch/arm64/kernel/head.S)
 
+*   L212: stext 프로시저 시작 위치
+*   L213: preserve_boot_args, 부트 파라미터 저장
+*   L214: el2_setup, EL2 설정
+*   L217: set_cpu_boot_mode_flag, CPU 부트 모드 저장
+*   L218: __create_page_tables, 페이지 테이블 생성
 
+
+리눅스 커널 v4.6 이후에는 KASLR이 도입되었다. KASLR은 Kernel 메모리 공간에서의 ASLR 기법을 일컫는다.
+KASLR을 통해 커널도 PIE 바이너리를 생성할 수 있게 되었다.
 
 
 #   리눅스 커널과 객체 지향 패턴
