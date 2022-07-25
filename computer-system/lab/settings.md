@@ -41,3 +41,13 @@ https://stackoverflow.com/q/375913
 dbi: dynamic binary instrumentation 동적 바이너리 계측
 gprof
 google performance tool(https://github.com/gperftools/gperftools)
+
+##  Data structure alignment
+[출처](https://en.wikipedia.org/wiki/Data_structure_alignment#References)
+
+*   data alignment
+*   data padding
+*   data packing
+
+SSE나 AVX 연산이나 컴퓨팅(cuda)에서 이슈가 됨.
+그래서 malloc을 대신 `algin_alloc`을 쓰고 `__alignas__`
