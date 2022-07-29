@@ -165,3 +165,93 @@ p210
 
 p211
 커널은 어플리케이션에 가상 처리기(LWP) 집합을 제공하고, 어플리케이션은 유저 스레드를 가상 처리기에 스케줄한다. 커널은 어플리케이션에 대해 특정 이벤트를 알려줘야 하는데, 이 프로시저를 upcall이라고 한다. upcall은 스레드 라이브러리의 upcall에 의해 처리되고, upcall 처리기는 가상 처리기에서 실행되어야 한다.
+
+#   Chapter 5
+
+##  5.3 스케줄링 알고리즘
+*   FCFS, First Come First Served Scheduling
+*   SJF, Shortest Job First Scheduling
+*   RR, Round Robin Scheduling
+*   Priority Scheduling
+*   Multilevel Queue Scheduling
+*   Multilevel Feedback Queue Scheduling
+
+호위 효과(convoy effect)
+
+##  5.5 다중 프로세서 스케줄링
+*   AMP: common-ready queue
+*   SMP: per-core run queues
+
+### 5.5.3 부하 균등화 Load Balancing
+*   push 이주: 바쁜 프로세서가 쉬고 있는 프로세서에 프로세스를 보내는 것
+*   pull 이주: 쉬고 있는 프로세서가 바쁜 프로세서를 기다리는 프로세스를 가져와서 실행
+
+##  5.6 실시간 CPU 스케줄링 Real-Time CPU Scheduling
+*   지연시간 최소화 Minimizing Latency
+    *   전체 지연 시간 = 인터럽트 지연시간 + 디스패치 지연 시간
+*   Priority Based Scheduling
+*   Rate Monotonic Scheduling
+*   EDF, Earliest-Dealing-First Scheduling
+*   Proportionate Share Scheduling
+
+##  5.8 알고리즘의 평가
+*   결정론적 모델링
+*   큐잉 모델
+*   시뮬레이션
+
+
+#   Chapter 6
+*   Critical Section Problem
+*   Peterson's Solution
+
+*   hardware support for synchronization
+    *   memory barrier
+        *   강한 순서:
+        *   약한 순서: 
+    *   hardware instruction for swap
+    *   atomic variable
+*   mutex: spin lock and semaphore
+
+##  pp286-287
+
+1.  상호 배제가 제대로 지켜진다는 사실. Mutual exclusion is preserved.
+    *   어떤 프로세스가 자기의 임계구역에서 실행된다면, 다른 프로세스들은 그들 자신의 임계구역에서 실행될 수 없다.
+2.  진행에 대한 요구 조건을 만족한다는 사실. The progress requirement is satisfied.
+    *   자기의 임계구역에서 실행되는 프로세스가 없고 그들 자신의 임계구역으로 진입하려는 프로세스들이 있다면, 나머지 구역에서 실행 중이지 않은 프로세스들만 다음에 누가 그 임계구역으로 진입할 수 있는지를 결정하는 데 참여할 수 있으므로, 이 선택은 무한정 연기될 수 없다.
+3.  대기 시간이 한없이 길어지지 않는다는 사실. Bounded-waiting requirement is met.
+    *   프로세스가 자기의 임계구역에 진입하려는 요청을 한 후부터 그 요청이 허용될 때까지 다른 프로세스들이 그들 자신의 임계구역에 진입하도록 허용되는 횟수에 한계가 있어야 한다.
+
+
+##  p290
+Peterson의 해결안은 최신 컴퓨터 아키텍처에서 작동한다고 보장되지 않는다. 주된 이유는 시스템 성능을 향상하기 위해 프로세서 및 / 또는 컴파일러가 종속성이 없는 읽기 및 쓰기 작업을 재정렬할 수 있기 때문이다.
+
+##  6.5 Mutex Locks
+p299
+일반적인 규칙은 라기이 유지되는 기간이 문맥 교환을 두 번 하는 시간보다 짧은 경우 스핀락을 사용하는 것이다. (부연: 스레드를 대기 상태로 옮기기 위한 문맥 교환과 락이 사용 가능해질 때 대기 중인 스레드를 복원하기 위한 문맥 교환 총 두 번)
+
+(중략)
+
+스핀락은 프로세스가 락을 기다려야 하고 문맥 교환에 상당한 시간이 소요될 때 문맥 교환이 필요하지 않다는 장점이 있다. 멀티 코어 시스템의 특정 상황에서는 실제로 락이 필요할 때 스핀락이 선호된다.
+
+##  6.6 Semaphore
+*   counting semaphore
+*   binary semaphore
+
+p300: 이진 세마포는 mutex lock과 유사하게 동작한다.
+
+##  6.7 Monitors
+p304
+프로그래머가 세마포를 잘못 사용하면 다양한 유형의 오류가 너무나도 쉽게 발생할 수 있다. 이러한 오류를 처리하기 위한 한 가지 전략은 간단한 동기화 도구를 통합하여 고급 언어 구조물을 제공하는 것이다. 이 절에서는 근본적인 고급 언어 구조물 중 하나인, 모니터(monitors) 형을 설명한다.
+
+##  6.8 Liveness
+p311: 무기한 대기하는 프로세스는 "라이브니스 실패"의 한 예이다.
+
+*   데드 락
+*   우선순위 역전
+
+
+#   Chapter 7
+##  7.1
+*   The Bounded-Buffer Problem
+*   The Readers-Writes Problem
+*   The Dining-Philosophers Problem
