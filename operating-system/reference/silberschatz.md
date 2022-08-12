@@ -315,3 +315,56 @@ reader들의 작업은 데이터에 영향을 미치지 않지만, writer의 작
 이때가 바로 페이지 교체가 필요한 시점이다.
 
 (하지만 프로세스 자체가 매우 많은 경우에는 프로세스가 교체될 때마다 페이지 교체를 요청하게 되므로 오히려 효율성이 떨어진다. 이렇게 메모리 공간 대비 프로세스가 너무 많아 페이지 교체 요청이 과도한 경우를 스레싱이라고 한다)
+
+### 페이지 교체 알고리즘
+*   FIFO
+*   OPT
+*   LRU
+    *   counter을 이용한 구현
+    *   stack을 이용한 구현
+*   LRU 근사
+    *   부가적 참조 비트 알고리즘
+    *   2차 기회 알고리즘
+*   LFU
+*   MFU
+*   페이지 버퍼링 알고리즘
+
+
+#   Chapter 11
+NVM: Non-volatile Memory Device 비휘발성 메모리 장치
+
+##  11.2 디스크 스케줄링
+HDD에서는 디스크 접근 시간 때문에 아래의 방식들을 사용하지만, NVM에서는 모든 메모리 위치의 접근 시간이 동일하므로 FCFS 또는 NOOP(in linux)를 사용한다.
+
+*   FCFS: First Come First Serve
+*   SCAN
+*   CSCAN
+*   deadline scheduler in linnux
+*   CFQ: Completely Fair Queuing
+
+##  11.5 저장장치 관리
+*   파티션: 물리적인 디스크 분할 방식
+*   볼륨: 논리적인 디스크 분할 방식
+
+##  11.8 RAID
+Redundant Array of Inexpensive/Independent Disk
+
+과거에 RAID은 소수의 비싼 디스크들을 다수의 값싼 디스크들로 대체하는 방법으로 사용되었지만, 현재는 경제적 이유보다는 높은 신뢰성과 높은 데이터 전송률 때문에 사용된다.
+그래서 RAID의 'Inexpensive'도 최근에는 'independent'를 나타내는 것으로 본다.
+
+
+#   Chapter 12
+
+##  12.2 입출력 하드웨어
+*   I/O-mapped I/O: 입출력과 메모리를 분리. 별도의 입출력 명령이 필요하다.
+*   Memory-mapped I/O
+    *   메모리 접근 명령을 통해 입출력 연산을 구현할 수 있다.
+
+DMA Controller: Direct Memory Access Controller
+
+*   인터럽트 처리기
+    *   FLIH: 1차 인터럽트 처리 - 문맥 교환, 상태 저장 및 처리 작업을 큐에 삽입 등
+    *   SLIH: 1차 인터럽트 처리 - 스케줄된(큐에 삽입된) 처리 작업을 수행
+
+##  12.6 STREAMS
+스트림

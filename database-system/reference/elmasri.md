@@ -69,8 +69,8 @@ p75: 약한 엔티티는 소유 엔티티 없이는 식별될 수 없기 때문�
 
 ### 4.2.4
 *   엔티티 무결성 제약 조건: 어떠한 기본키 값도 널 값이 될 수 없다
-*   참조 무결성 제약 조건
-    *   외래키
+*   참조 무결성 제약 조건: 참조되는 튜플은 반드시 릴레이션에 존재해야 한다.
+    *   외래키: 
 
 
 
@@ -79,3 +79,43 @@ p75: 약한 엔티티는 소유 엔티티 없이는 식별될 수 없기 때문�
     *   relation    : table
     *   tuple       : row
     *   attribute   : column
+
+
+##  DML 구조
+Chapter 5부터 6까지를 반영
+
+```sql
+SELECT      `<attribute list>`
+    FROM    `<table list>` AS
+    WHERE   `<conditions>` =, <, <=, >, >=, <>
+            EXISTS, NOT EXISTS `<SQL statement>`
+            IN `<explicit set>`
+    GROUP BY
+    HAVING
+    ORDER BY `<attribute list>` DESC ASC  --default는 ASC
+```
+
+p175:
+```sql
+SELECT      `<애트리뷰트와 함수 리스트>`
+FROM        `<테이블 리스트>`
+WHERE       `<조건>`
+GROUP BY    `<그룹화 애트리뷰트(들)>`
+HAVING      `<그룹 조건>`
+ORDER BY    `<애트리뷰트 리스트>`
+```
+
+##  renaming (or aliasing)
+`FROM`절의 테이블들에 대해 `AS` 키워드를 이용하면
+```sql
+SELECT E.Fname, E.Lname
+FROM
+    EMPLOYEE AS E(...)
+```
+`AS` 키워드를 애트리뷰트에 사용하면 SQL 결과에서 애트리뷰트 이름이 `AS`로 설정한 이름으로 바뀌어 출력된다(p165, 6.1).
+
+#   Chapter 6
+*   조인: NATURAL, INNER, OUTER
+*   집단 함수 Aggregate Function: COUNT, SUM, MAX, MIN, AVG
+*   WITH(임시테이블 기능), CASE(- WHEN - THEN, ELSE)
+*   순환 질의: WITH RECURSIVE
