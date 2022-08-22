@@ -1,0 +1,1 @@
+*   [SQL 전문가 가이드 웹사이트](https://dataonair.or.kr/db-tech-reference/d-guide/sql/?pageid=5&mod=list)
