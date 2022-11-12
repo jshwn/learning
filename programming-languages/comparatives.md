@@ -4,11 +4,17 @@
 *   python
 *   javascript(typescript)
 *   swift
+*   kotlin
 *   java
+*   dart
 
 ##  Typing
 
 ### Dynamic Typing
+dynamic typing이란 타입 검사를 컴파일 타임이 아니라 런타임에 수행하는 것을 말한다.
+즉 변수에 숫자를 할당했다가 문자를 할당해도 각 시점마다 자료형에 맞는 연산만 수행된다면 문제가 없다.
+
+javascript에서는 변수 선언을 제약하는 기능을 제공한다.
 ```javascript
 a = 1;      // Declare as global varialbe
 var a = 1;  // redeclarable and reallocatable; var hoisting issue
@@ -18,7 +24,7 @@ let a = 1;  // unredeclarable but reallocatable
 const a = 1;// unredeclarable, unreallocatable but modifiable of properties for object data types
 ```
 
-단, 전역 변수와 var 변수는 다음과 같은 차이가 있다.
+전역 변수와 var 변수는 다음과 같은 차이가 있다.
 ```javascript
 console.log(a)  // undefined
 var a="Hello"
@@ -49,22 +55,46 @@ public Int a
 public final Int b;
 ```
 
-swift5에서는 변수 선언 시에 타입 명시를 생략할 수 있을 뿐이지 다른 타입을 재할당할 수 없다.
+swift5에서는 변수 선언 시에 타입 명시를 생략할 수 있을 뿐, 다른 타입을 재할당할 수 없다.
 ```swift
 var a = 1;  // unredeclarable but reallocatable
-let a = 1;  // unredeclarable, unreallocatable but modifiable of properties for collection types
+let b = 1;  // unredeclarable, unreallocatable but modifiable of properties for collection types
 ```
 
+kotlin에서는 `val`과 `const`가 있다. `val`은 runtime에 상수를 할당학 `const val`은 compile time에 상수를 할당한다.
+```kotlin
+var a: Int = 1; // var stands for variable
+val b; Int = 2; // val stands for valuable
+```
+
+dart의 상수 키워드에는 `final`과 `const`가 있다. `final`은 런타임에 상수 할당을 체크하고 `const`는 컴파일 타임에 상수 할당을 체크한다.
+두 상수 키워드 모두 사용할 때 변수 선언과 변수 초기화(값 할당)가 동시에 이루어져야 한다.
+컴파일 타임에 정확한 값을 알 수 있으면 `const`를, 그러지 않으면 `final`을 사용해야 한다.
+```dart
+final Datetime now = new DateTime.now();    // 가능
+const Datetime now = new DateTime.now();    // 불가능
+```
+
+dart에서는 `late`라는 키워드(>=2.12)도 있는데 
+
 ##  Type Conversion
-형변환에는 묵시적(implicit) 형변환과 명시적(explicit) 형변환이 있다. 이때 명시적 형변환은 보통 type casting이라고 한다. 보통 묵시적 형변환은 수학 연산 중 정수와 부동소수점수 사이의 연산을 가능하게 하기 위해 이루어진다. 이 단락에서는 이러한 형변환을 제외한 모든 형변환 이슈를 다룬다.
+형변환에는 묵시적(implicit) 형변환과 명시적(explicit) 형변환이 있다. 이때 명시적 형변환은 보통 type casting이라고 한다. 묵시적 형변환은 수학 연산 중 정수와 부동소수점수 사이의 연산을 가능하게 하기 위해 이루어진다. 이 단락에서는 이러한 형변환을 제외한 모든 형변환 이슈를 다룬다.
 
 java 역시 c/c++과 같이 primitive data types에 대해서는 type casting이 가능하다.
 
 ### C/C++, Java
+c/c++에서 타입 캐스팅은 자료형의 포인터에 대해서 자주 이루어진다.
 ```c
 int a = 100;
 double b = (double) a;
 ```
+
+### Dart & Swift
+dart와 swift5 모두 `as`를 명시적인 형변환 키워드로 사용한다.
+dart와 swift5 모두 업캐스팅(upcasting)은 묵시적으로 이루어진다.
+
+swfit5는 여기에 더해 `as?`와 `as!` 키워드도 사용한다.
+만약 다운캐스팅에 실패하면 `as?`는 `nil`을 반환하며, `as!`는 에러를 발생시킨다.
 
 ### Java Autoboxing & Unboxing
 Java에는 특별하게 원시 자료형과 그 자료형에 해당하는 wrapper 클래스 간의 암묵적인 형변환이 존재한다.
@@ -159,10 +189,10 @@ Optional<T> optional = Optional.ofNullable(a);
 T data = optional.ofElse("something for fallback"); // Nullish Coalescing
 ```
 
-kotlin에서는 Optional type을 `nullable type` optional chaining을 safe call이라고 부르며, nullish coalescing 연산자를 elvis 연산자라고 한다.
+kotlin에서는 Optional type을 `nullable type`, optional chaining을 safe call이라고 부르며, nullish coalescing 연산자 `?:`를 elvis 연산자라고 한다.
 ```kotlin
-val x = a?.b
-val x = null ?: "value"
+val x = a?.b;
+val x = null ?: "value";
 ```
 
 swift에서는 optional type, optional chaining, nil coalescing을 모두 지원하지만 OR 연산자를 통한 coalescing은 지원하지 않는다.
@@ -234,6 +264,8 @@ let age  = 20;
 let stmt = "\(name) is \(age) years old"
 ```
 
+
+
 ##  Functional Programming
 *   기본 개요
     *   유명 함수
@@ -270,3 +302,21 @@ System.out.println(lambda.myCall()); // customer
 
 *   Stream (외부적으로는 function pipelining, 내부적으로는 currying)
     +   Java 7 Fork/Join Model for thread implementation
+
+
+
+##  Object Orient Programming
+
+
+### dart
+*   dart 생성자
+    *   생성자, generative constructor
+    *   기본 생성자
+    *   유명 생성자
+    *   리다이렉팅 생성자
+    *   상수 생성자
+    *   팩토리 생성자
+    *   initializing formal parameter
+
+### Prototype(Javascript)
+생략
