@@ -23,7 +23,7 @@ needs discuss about DDD, Dependency Injection
         *   `inversify`
 
 ### 설계에 대한 고민
-React의 View Update 로직에서 Model로 class를 사용하는 것은 거의 안티 패턴에 가깝다. 하지만 시스템이 복잡해질수록 명세와 구현의 구분이 더욱 필요해지며 인터랙션이 복잡해질수록 반응형 프로그래밍은 더더욱 필요해진다. 전자는 OOP 중에서도 DI와 관련되어 있다.
+React의 View Update 로직에서 class를 Model로 사용하는 것은 안티 패턴에 가깝다. 하지만 시스템이 복잡해질수록 명세와 구현의 구분이 더욱 필요해지며 인터랙션이 복잡해질수록 반응형 프로그래밍은 더더욱 필요해진다. 전자는 OOP 중에서도 DI와 관련되어 있다.
 
 DI와 reactive programming을 모두 만족하는 frontend framework로는 Angular 2를 꼽을 수 있다. 아직 제대로 알아보지는 않았지만 의존성 주입이 상속받은 클래스에 대해서도 적용되는지는 미지수이다(아마 될 것으로 예상한다). 그리고 reactive programming은 rxjs을 차용하여 구현하였다.
 
