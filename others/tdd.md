@@ -1,3 +1,20 @@
+#   TDD 전략
+
+##  Given-Then-When
+*   Given: 준비
+*   Then:  실행
+*   When:  검증
+
+
+##  Red-Green-Refactor
+출처: https://www.oreilly.com/library/view/modern-c-programming/9781941222423/f_0054.html
+1.  Write a test which fails
+2.  Get the test to past
+3.  Optimize the Design
+
+
+
+
 #   Test Driven Development
 TDD:BE. 켄트 벡 저, 김창준·강규영 역. 테스트 주도 개발. 2013.
 
