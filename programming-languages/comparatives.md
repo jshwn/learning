@@ -61,7 +61,7 @@ var a = 1;  // unredeclarable but reallocatable
 let b = 1;  // unredeclarable, unreallocatable but modifiable of properties for collection types
 ```
 
-kotlin에서는 `val`과 `const`가 있다. `val`은 runtime에 상수를 할당학 `const val`은 compile time에 상수를 할당한다.
+kotlin에서는 `val`과 `const`가 있다. `val`은 runtime에 상수를 할당하고 `const val`은 compile time에 상수를 할당한다.
 ```kotlin
 var a: Int = 1; // var stands for variable
 val b; Int = 2; // val stands for valuable
@@ -76,6 +76,14 @@ const Datetime now = new DateTime.now();    // 불가능
 ```
 
 dart에서는 `late`라는 키워드(>=2.12)도 있는데 
+
+##  SubTyping
+
+### Type Variance
+*   Covariance 공변성
+*   Convariance 반공변성
+*   Invariance 무공변성
+*   Bivariance 양공변성
 
 ##  Type Conversion
 형변환에는 묵시적(implicit) 형변환과 명시적(explicit) 형변환이 있다. 이때 명시적 형변환은 보통 type casting이라고 한다. 묵시적 형변환은 수학 연산 중 정수와 부동소수점수 사이의 연산을 가능하게 하기 위해 이루어진다. 이 단락에서는 이러한 형변환을 제외한 모든 형변환 이슈를 다룬다.
