@@ -10,7 +10,7 @@ Process는 context와 image가 모두 결합된 인스턴스이고, Thread는 co
 스레드를 사용하는 이유는 자원 공유와 병렬성에 이점이 있기 때문이다. 프로세스 간 자원 공유는 꽤 어려운 문제인데 스레드들은 같은 프로세스 메모리 공간에서 별도의 overhead 없이 자원을 공유할 수 있다. 그리고 프로세스는 (적어도 개념적으로는) 병렬화가 불가능하다. 하나의 인스턴스가 하나의 로직만을 동작시키기 때문이다. 하지만 프로세스에서 여러 개의 스레드를 만들면 같은 로직을 동시에 실행시킬 수가 있다.
 
 ### task_struct
-리눅스는 process와 thread 모두 task로 취급한다. 각각에 해당하는 PCB와 TCB가 있지 않고 모두 `struct task_strcut`으로 구현된다. 다만 
+리눅스는 process와 thread 모두 task로 취급한다. 각각에 해당하는 PCB와 TCB가 있지 않고 모두 `struct task_strcut`으로 구현된다. 다만 이를 구현하기 위해 thread group 개념을 도입하였다. 일반 프로세스는 tgid와 pid가 같으며, 스레드는 부모 스레드(또는 리더 스레드)와 tgid는 같지만 pid가 다르다.
 
 ### User Mode & Kernel Mode
 kernel mode로 진입할 때 user mode에서의 context(cpu register 등)을 저장할 필요가 있다. 
