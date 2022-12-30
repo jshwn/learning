@@ -112,7 +112,74 @@
         *   `create`: dynamic instantiation of custom class as provider
         *   `introspect`: ??
 
+##  Dynamic Module
+*   원래 배웠던 방식은 static module binding
+*   static module binding에서는 module이 provider에 영향을 미칠 수가 없다. 즉 provider 의존성을 controller나 다른 module에 전파하는 역할밖에 못한다.
+*   dynamic module에서는 module에서 `DynamicModule`을 통해 provider에 정보를 넘겨줄 수가 있다.
++   bootstrap time에 인스턴스화된다. runtime에 인스턴스화되는 것은 lazy module이다.
+
+```ts
+// example
+// ./config/config.service.ts
+import * as dotenv from 'dotenv';
+import * as fs from 'fs';
+import { Injectable, Inject } from '@nestjs/common';
+import { EnvConfig } from './interfaces';
+
+@Injectable()
+export class ConfigService {
+  private readonly envConfig: EnvConfig;
+
+  constructor(@Inject('CONFIG_OPTIONS') private options: Record<string, any>) {
+    const filePath = `${process.env.NODE_ENV || 'development'}.env`;
+    const envFile = path.resolve(__dirname, '../../', options.folder, filePath);
+    this.envConfig = dotenv.parse(fs.readFileSync(envFile));
+  }
+
+  get(key: string): string {
+    return this.envConfig[key];
+  }
+}
+
+// ./config/config.module.ts
+import { DynamicModule, Module } from '@nestjs/common';
+import { ConfigService } from './config.service';
+
+@Module({})
+export class ConfigModule {
+  static register(options: Record<string, any>): DynamicModule {
+    return {
+      module: ConfigModule,
+      providers: [
+        {
+          provide: 'CONFIG_OPTIONS',
+          useValue: options,
+        },
+        ConfigService,
+      ],
+      exports: [ConfigService],
+    };
+  }
+}
+
+// app.module.ts
+import { Module } from '@nestjs/common';
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
+import { ConfigModule } from './config/config.module';
+
+@Module({
+    imports: [ConfigModule.register({ folder: './config' })],
+    controllers: [AppController],
+    providers: [AppService],
+})
+export class AppModule {}
+```
+
+
+##  other features
 *   lazy module
+    *   ref: https://docs.nestjs.com/fundamentals/dynamic-modules
     *   necessity for low bootstrap time.
     *   bootstrap의 시간 부담을 각 모듈을 호출할 때 나누어 부담하는 방식.
 
@@ -124,10 +191,19 @@
 *   nest-router for route nesting
 
 
+##  Microservices
+NestJS Apllication as Client
+
+ClientProxy is lazy
+
+* more readings
+  * https://dev.to/nestjs/part-1-introduction-and-setup-1a2l
+  * https://dev.to/johnbiundo/series/4724
+  * https://dev.to/nestjs/part-1-introduction-and-setup-1a2l
+
+
 ##  TODO
-*   Dynamic Modules
-*   Testing
-*   
+
 
 ##  others
 +   `fluent interface`: design which relies on method chaining
@@ -136,3 +212,93 @@
     *   nestjs에서도 barrel file을 만드는 것을 추천하지 않는다.
 *   The Twelve Factors App
     *   ref: https://12factor.net
+
+
+
+##  Core Anatomy
+Java Spring의 Module과 Bean은 NestJS의 Module과 Provider에 각각 대응한다고 볼 수 있다(1:1 대응인지는 확신 X)
+
+
+### line by line
+*   version: `@nestjs/core ^9.0.0`
+
+* `await NestFactorry.create(AppModule);`
+  * `NestFactorry.create()` context starts
+  * `const container = new NestContainer(new ApplicationConfig());`
+  * `await this.initialize(module, container, applicationConfig, httpServer);`
+  * paramter evaluated form: `await this.initialize(AppModule, container, applicationConfig, httpServer);`
+  * `NestContainer.initialize()` context starts
+    * `const instanceLoader = new InstanceLoader(container);`
+    * `const teardown = this.abortOnError === false ? rethrow : undefined;`
+    * evaluated form:
+      * `const teardown = true === false ? rethrow : undefined;`
+      * `const teardown = undefined;`
+    * `await ExceptionsZone.asyncRun(...)`
+    * `ExceptionsZone.asyncRun()` context starts
+      * `await dependenciesScanner.scan(module);`
+      * `DependenciesScanner.scan()` context starts
+        * `await this.registerCoreModule();`
+        * `DependenciesScanner.registerCoreModule()` context starts
+          *   ```ts
+              // evaluated form:
+              const moduleDefinition = InternalCoreModuleFactory.create(
+                container,
+                DependenciesScanner
+                ModuleCompiler(),
+                HttpAdapterHostRef(),
+              );
+              ```
+            * `InternalCoreModuleFactory.create` context starts
+            * **ref for moduleDefinition which is return value of `DependenciesScanner.registerCoreModule()`** : https://github.com/nestjs/nest/blob/aa3ad07c1023b71edda6b6ea53374787d3712231/packages/core/injector/internal-core-module/internal-core-module-factory.ts#L19
+            * `InternalCoreModuleFactory.create` context ends
+          * `const [instance] = await this.scanForModules(moduleDefinition);`
+          * `DependenciesScanner.scanForModules` context starts
+            * `const moduleInstance = await this.insertModule(moduleDefinition, scope);`
+            * `DependenciesScanner.insertModules()` context starts
+              *   ```ts
+                  const moduleToAdd = this.isForwardReference(moduleDefinition)
+                    ? moduleDefinition.forwardRef()
+                    : moduleDefinition;
+                  ```
+                * `DependenciesScanner.isForwardReference()` context starts
+                  * ref for return value: https://github.com/nestjs/nest/blob/aa3ad07c1023b71edda6b6ea53374787d3712231/packages/core/scanner.ts#L542
+                  * evaluated form of return value: `module`
+                * `DependenciesScanner.isForwardReference()` context ends
+                * `return this.container.addModule(moduleToAdd, scope);`
+                * `NestContainer.addModule()` context starts
+                  * `const { type, dynamicMetadata, token } = await this.moduleCompiler.compile(metatype);`
+                  * `ModuleCompiler.compile()` context starts
+                    * `const { type, dynamicMetadata } = this.extractMetadata(await metatype);`
+                    * `ModuleCompiler.extractMetadata()` context starts
+                      * `if (!this.isDynamicModule(metatype)) {return { type: metatype };}`
+                      * evaluated form
+                        * `if (!(!!metatype.module)){return { ... };}`
+                        * `if (!true){ ... }`
+                      * **InternalCoreModule as `metatype` is Dynamic Module**
+                      * `const { module: type, ...dynamicMetadata } = metatype;`
+                      * `return { type, dynamicMetadata };`
+                      * evaluated form of return value: `{ type: metatype.module, dynamicMetadata: { ...metatype properties except module } }`
+                    * `ModuleCompiler.extractMetadata()` context ends
+                    * `const token = this.moduleTokenFactory.create(type, dynamicMetadata);`
+                    * `ModuleTokenFactory.create(metatype, dynamicModuleMetadata)` context starts
+                      * parameter `metatype`: instance of class `InternalCoreModule`
+                      * parameter `dynamicModuleData`: `exports`, `providers`, `metatype`, ...
+                      * if moduleId is not saved in `moduleTokenFactory.moduleIdsCache` (which is WeakMap):
+                        * `moduleId = randomStringGenerator();`
+                        * `this.moduleIdsCache.set(metatype, moduleId);`
+                      * `return hash(opaqueToken, { ignoreUnknown: true })`
+                    * `ModuleTokenFactory.create()` context ends
+                    * `return { type, dynamicMetadata, token };`
+                      * 이때 token은 opaqueToken
+                  * `ModuleCompiler.compile()` context ends
+                  * `const moduleRef = new Module(type, this);`
+                  * evaluated form: `const moduleRef = new Module(internalCoreModule, NestContainer);`
+                    * `Module.constructor()` context starts
+                      * 생략
+                    * `Module.constructor()` context ends
+                  * 생략
+              * `DependenciesScanner.insertModules()` context ends
+              * `ctxRegistry.push(moduleDefinition);`
+            * 생략
+      * `InstanceLoader.createInstancesOfDependencies()` context starts
+        * `this.createPrototypes()` context starts
