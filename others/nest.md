@@ -177,6 +177,13 @@ export class AppModule {}
 ```
 
 
+##  Mapped Type
+* issue with swagger: https://docs.nestjs.com/openapi/mapped-types
+* issue with graphql: https://docs.nestjs.com/graphql/mapped-types
+
+TypeScript does not store metadata about generics or interfaces, so when you use them in your DTOs, ValidationPipe may not be able to properly validate incoming data.
+
+
 ##  other features
 *   lazy module
     *   ref: https://docs.nestjs.com/fundamentals/dynamic-modules
@@ -202,8 +209,12 @@ ClientProxy is lazy
   * https://dev.to/nestjs/part-1-introduction-and-setup-1a2l
 
 
-##  TODO
+##  Caching
+NestJS의 Auto-cahcing Response 기능은 기본적으로 Request URL 별로 caching을 하며, 이때 `GET` request의 값만 캐싱한다.
+또한 직접 `@Res` 데코레이터를 직접 사용하여 Response 객체에 접근하는 경우에는 Cache Interceptor 사용이 불가하여 Auto-caching이 제한된다.
 
+##  TODO
+*   Deep Comprehension on NestJS Microservices
 
 ##  others
 +   `fluent interface`: design which relies on method chaining
@@ -212,7 +223,7 @@ ClientProxy is lazy
     *   nestjs에서도 barrel file을 만드는 것을 추천하지 않는다.
 *   The Twelve Factors App
     *   ref: https://12factor.net
-
+*   `convict` for configuration
 
 
 ##  Core Anatomy

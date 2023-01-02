@@ -18,3 +18,6 @@
 
 *   Repository
     *   ORM을 주로 사용
+
+*   UseCase
+    *   
