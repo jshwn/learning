@@ -224,8 +224,47 @@ NestJS의 Auto-cahcing Response 기능은 기본적으로 Request URL 별로 cac
 *   The Twelve Factors App
     *   ref: https://12factor.net
 *   `convict` for configuration
+*   `dayjs`
+*   `loadsh`
+*   dbeaver: db tools
+*   CQRS: Command-QueRy Seperation
+
+*   CDW: Collision Damage Waiver
 
 
+### 설계
+* 고려사항
+  * evaluated value of expression
+    * falsify / truthy value 정의
+    * 상태 관련 표현식 정의
+      * `if( Domain.isAlreadySaved )`
+  * Error / Warn / Server Return / UseCase Return 등의 형식을 정의
+* 여러 개의 옵션으로 조회할 때 옵션을 AND하기
+  * object value enumeration
+  * typescript decorator로 fluent interface method 지정
+* CRUD(CQRS)
+  * CREATE: INSERT: none => new
+  * READ: SELECT: Query
+  * UPDATE: Query, old => new
+  * DELETE: Query, old => none
+* Layer
+  * Controller REST API
+  * UseCase, Domain, Aggregate
+  * Repository
+    * save: entity ? UPDATE : CREATE
+    * insert: CREATE
+    * remove: DELETE
+    * find: SELECT
+    * ...
+  * UseCase
+    * 최대한 Business Logic만 나타내도록 코드를 추상화할 필요가 있다.
+    * frontend(parameter validation, preprocess), main logic, backend(return in pre-defined format)
+    * frontend와 backend는 language 또는 system specific하게, main logic은 portable하게(dto 등)
+    * frontend와 backend는 해당 UseCase Class의 private method 또는 decorator로 할 필요.
+      * decorator의 경우 다음 참고: https://stackoverflow.com/a/56716378
+  * Repository
+    * Entity와 Domain 간 Mapping (Entity에는 DB의 해당 Table speciic한 정보를 데코레이션의 포함)
+    * 
 ##  Core Anatomy
 Java Spring의 Module과 Bean은 NestJS의 Module과 Provider에 각각 대응한다고 볼 수 있다(1:1 대응인지는 확신 X)
 

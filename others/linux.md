@@ -12,5 +12,5 @@
 
 ##  Use cases
 *   find specific text string in multiple files
-    *   `grep -rnw <directory|file> -e <patter>`
+    *   `grep -rnw <directory|file> -e <pattern>`
     *   ref: https://stackoverflow.com/questions/16956810/how-to-find-all-files-containing-specific-text-string-on-linux
