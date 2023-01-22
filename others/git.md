@@ -33,6 +33,7 @@ git checkout은 하나의 command가 너무 많은 기능을 내포하고 있어
     *   `git merge --ff-only <parent branch>` in target branch
 
 ##  Use cases
+*   `git push origin --delete <branch>`: remote branch 삭제
 *   `git commit --amend`: 가장 최근 commit message 수정
 *   `git checkout`
     *   GIT-CHECKOUT(1), Git Manual 참고
