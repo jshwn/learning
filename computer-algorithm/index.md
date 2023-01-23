@@ -6,7 +6,7 @@
     *   tree traversal: simple dfs, bfs, pre/in/post order traversal
 *   backtracking: 조건을 만족하는 케이스만 진행
 *   greedy algorithm: 현재 케이스에서 최선의 케이스만 진행
-    *   dijkstra algorithm, mst(kruskal), huffman's code, 
+    *   dijkstra algorithm, mst(kruskal), huffman's code,
 *   dynamic programming: 실행한 케이스의 결과를 저장하고 나중에 해당 케이스를 실행할 때 저장값을 반환
     *   완전탐색, 백트래킹, 그리디 모두에 적용 가능한 개념.
 
