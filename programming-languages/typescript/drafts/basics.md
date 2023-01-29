@@ -58,7 +58,7 @@ bear.honey;
 ##  narrowing
 *   type narrowing (type guard)
     *   In TypeScript, checking against the value returned by `typeof` is a type guard.
-*   `in` operator narrowing (property or element narrowing)
+*   `in`(>=4.9) operator narrowing (property or element narrowing)
 *   truthiness narrowing
 *   equality narrowing
 *   discriminated union 방법

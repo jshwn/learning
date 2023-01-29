@@ -45,7 +45,7 @@ answers = []
 T = readScalar() # Test Case
 for _ in range(T):
     N = readScalar() # number of coins
-    coins = readVector() # value per coin
+    coins = readVector() # value per coin, 요소의 순서는 상관이 없음.
     M = readScalar() # price
 
     dp = [0 for _ in range(M+1)]

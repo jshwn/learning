@@ -1,7 +1,6 @@
 #   knapsack
 *   무게와 가치가 주어진 각 요소들에 대하여 제한된 무게로 최대의 가치를 도출하는 문제
-*   선형계획법 문제
-*   각 물품은 1개씩만 선택 가능
+*   선형계획법과 유사하나 문제의 성질이 전혀 다름.
 
 ##  백준 12865, 평범한 배낭
 *   무게 a와 가치 b에 대하여
@@ -40,19 +39,19 @@ N, M = readVector() # N, M = 5, 60
 A = readVector() # B = [30, 10, 20, 35, 40]
 B = readVector() # C = [3, 0, 3, 5, 4]
 
-ASUM = sum(A)
+BSUM = sum(B)
 
-dp = [[0 for _ in range(ASUM+1)] for _ in range(N+1)]
+dp = [[0 for _ in range(BSUM+1)] for _ in range(N+1)]
 for i in range(N):
     a, b = A[i], B[i]
-    for j in range(ASUM+1):
+    for j in range(BSUM+1):
         b_ij = dp[i][j]
 
         if j-b >= 0:
             dp[i][j] = max(b_ij, dp[i-1][j-b]+a)
         dp[i][j] = max(b_ij, dp[i-1][j])
 
-for i in range(ASUM+1):
+for i in range(BSUM+1):
     a = dp[N][i]
     if a < M: continue
     print(i)
