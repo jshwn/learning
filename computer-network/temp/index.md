@@ -54,7 +54,7 @@
 7.  응용 계층 Application Layer
 
 ##  MAN - DQDB
-MAN: MEtorpolitan Area Network
+MAN: Metorpolitan Area Network
 DQDB: Distributied Queue Dual Bus. MAN을 위한 국제 표준안.
 
 1.  분산 데이터 큐

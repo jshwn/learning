@@ -11,7 +11,7 @@ git diff --cached
 ```
 `--cached` option을 붙이지 않으면 아직 `add`하지 않은(unstaged) file들까지 모두 출력하게 된다.
 
-Git tracks content not files: Git은 
+Git tracks content not files: Git은
 
 `git log`에 `-p` 옵션을 붙이면 매 commit마다 complete diffs를 첨부하여 출력한다.
 
@@ -37,8 +37,35 @@ git checkout은 하나의 command가 너무 많은 기능을 내포하고 있어
 *   `git commit --amend`: 가장 최근 commit message 수정
 *   `git checkout`
     *   GIT-CHECKOUT(1), Git Manual 참고
-    *   `-b <branch>`: 
+    *   `-b <branch>`:
 *   `git checkout -- <filename>`: 하나의 file만 직전commit 상태로 reset하기
 *   `git checkout .`은 `git reset`과 비슷한 효과
 *   `git switch <branch>`: remote branch가 존재할 경우, `git fetch` 후에 사용
     *   ref: https://stackoverflow.com/a/9537923
+
+#   Git 심화
+*   file status
+    *   untracked
+    *   unmodified (tracked)
+    *   modified (tracked)
+    *   staged
+    *   commit
+*   git stash
+    *   commit은 아니지만 변경사항을 현재 브랜치에 잠시 저장
+*   git merge
+*   git stage
+*   git rebase
+    *   --interactive, -i
+        *   pick
+        *   reword
+        *   edit
+        *   squash
+        *   fixup
+        *   break
+        *   drop
+        *   label
+        *   reset / reset --hard
+    *   --onto
+    *   --keep-base
+*   git singature (`-S` option)
+    *   git commit ... -S

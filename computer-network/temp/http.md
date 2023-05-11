@@ -27,3 +27,28 @@ HTTP is  generic, stateless, protocol.
 
 ##  HTTP Connection Models
 [HTTP/1.x의 커넥션 관리 - HTTP | MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/Connection_management_in_HTTP_1.x)
+
+##  HTTP Message 구성요소
+*   Request Message
+    *   start line: HTTP Method, URL, Protocol Version
+    *   headers
+    *   blank line
+    *   body
+*   Response
+    *   start line: Protocol Version, HTTP Status
+    *   headers
+    *   blank line
+    *   body
+
+### Headers
+HTTP 통신과 기타 정책에 대한 정보를 담는 HTTP 메시지의 필드이다.
+참고로 HTTP 쿠키의 데이터는 HTTP 헤더에 담겨 통신에 사용된다.
+
+##  HTTP 연결 관리
+
+### HTTP Frame
+HTTP 1.1까지는 HTTP Message의 물리적인 전송 단위가 Message 그 자체였다.
+하지만 HTTP 2.0부터는 HTTP Message를 분할해서 전송할 수 있는 Frame이라는 단위가 추가되었다.
+
+### Stream (HTTP 2)
+* 참고: https://velog.io/@cjh8746/HTTP-Keep-Alive-와-pipelining-그리고-Multiplexed-Streams을-공부하다가-알게된-버전열-HTTP0.9-2.0-정리#multiplexed-streams

@@ -1,7 +1,7 @@
 #   Mysql
 
 ##  꿀팁 및 기타
-*
+*   mysql STRAIGHT_JOIN
 *   mysql community 버전에서는 스레드 풀을 지원하지 않는다.
 
 ##  아키텍처
