@@ -26,7 +26,7 @@
   * Buffer pool
     * MySQL 5.7부터 Buffer pool의 크기를 설정할 수 있으며, 동적으로 확장도 가능하다. 다만 중요한 설정이므로 DB를 내리고 작업해야 한다.
     * 버퍼 풀의 크기가 커질수록 조회 성능만 증가한다.
-    * Redo Log의 크기가 거야 조작 성능이 증가한다.
+    * Redo Log의 크기가 커야 조작 성능이 증가한다.
 
 ##  실습
 * sql문 실행계획 출력: `EXPLAIN|DESCRIBE|DESC FORMAT=Table|JSON|TREE <SQL STATEMENT>;`
