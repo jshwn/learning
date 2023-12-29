@@ -30,3 +30,12 @@
     *   RNN
     *   LSTM
     *   ...
+
+##  Framework
+*   목록
+    *   pytorch
+    *   keras, tensorflow
+    *   sklearn (scikit learn)
+
+*   출처
+    *   [Keras vs PyTorch 어떤 플랫폼을 선택해야 할까?](https://github.com/KerasKorea/KEKOxTutorial/blob/master/42_keras_or_pytorch_as_your_first_deep_learning_framework.md)
