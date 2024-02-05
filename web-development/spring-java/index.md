@@ -16,3 +16,15 @@
 * 대용량, MSA
   * parallel transaction
   * timeout configuration
+
+### 의존성
+* Spring 기본
+  * Logger (slf4j)
+  * Filter, Interceptor
+* Lombok
+* Validation
+* Spring Boot Debvtools
+* Docker Compose Support
+* Spring Web
+* Spring Security
+* Spring Boot Actuator
