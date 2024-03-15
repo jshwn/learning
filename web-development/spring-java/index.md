@@ -17,10 +17,14 @@
   * parallel transaction
   * timeout configuration
 
+* 모니터링
+  * Spring Boot Actuator, Prometheus, Grafana, Thanos
+
 ### 의존성
 * Spring 기본
   * Logger (slf4j)
   * Filter, Interceptor
+  * Testing
 * Lombok
 * Validation
 * Spring Boot Debvtools
