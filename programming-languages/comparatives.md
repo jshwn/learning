@@ -64,7 +64,7 @@ let b = 1;  // unredeclarable, unreallocatable but modifiable of properties for 
 kotlin에서는 `val`과 `const`가 있다. `val`은 runtime에 상수를 할당하고 `const val`은 compile time에 상수를 할당한다.
 ```kotlin
 var a: Int = 1; // var stands for variable
-val b; Int = 2; // val stands for valuable
+val b: Int = 2; // val stands for valuable
 ```
 
 dart의 상수 키워드에는 `final`과 `const`가 있다. `final`은 런타임에 상수 할당을 체크하고 `const`는 컴파일 타임에 상수 할당을 체크한다.
@@ -114,9 +114,21 @@ Java에는 특별하게 원시 자료형과 그 자료형에 해당하는 wrappe
 
 이는 OOP의 리스코프 치환 원칙 (LSP, Liskov Substitution Principle)과 연관된 이슈이다.
 
+##  Statements
+
+### conditional expressions
+
+### loop expressions
+*   `for(index = startValue; #termination condition#; increment expression)`
+*   `for element in collection`
+    *   python, swift, javascript
+*   `while (#condition#) {}`
+*   `do {} while (#condition#) {}`
+
 
 ##  Expressions
 
+### others
 *   삼항연산자 Tenary Operator
     *   `True if expr else False` for python
     *   `expr ? true : false ` for others
