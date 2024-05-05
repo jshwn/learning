@@ -1,0 +1,16 @@
+version: '3.1'
+
+#  docker compose -f docker-compose.dev.yml up
+
+services:
+  svelte-tutorial:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    volumes:
+      - .:/app
+    ports:
+      - "3000:3000"
+    stdin_open: true
+    tty: true
+
