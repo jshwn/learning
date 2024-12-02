@@ -27,3 +27,5 @@
   * 참고: https://css-tricks.com/couple-takes-sticky-footer/
 
 * [Flexible column layout](https://experience.sap.com/fiori-design-web/flexible-column-layout)
+
+* browser-dependent screen and text re-sizing
